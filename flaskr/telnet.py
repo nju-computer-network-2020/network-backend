@@ -5,7 +5,7 @@ import topology as tp
 
 def config_router(hostname, router_info):
     target = TelnetConnection(hostname, router_info['ip'], router_info['password'])
-    target.execute_commands(tp.commands[hostname])
+    return target.execute_commands(tp.commands[hostname])
 
 
 def _input_to_telnet(command: str):
@@ -18,7 +18,7 @@ class TelnetConnection:
         self.ip = ip
         self.password = password
 
-    def test_connection(self):
+    def _connect(self, func=lambda x: None):
         try:
             with Telnet(self.ip) as tn:
                 tn.read_until(b'Password:')
@@ -30,11 +30,13 @@ class TelnetConnection:
                 if b'Password:' in result:
                     return 'invalidPasswd'
                 elif b'>' in result:
+                    func(tn)
                     return 'success'
-        except TimeoutError:
+        except (TimeoutError, ConnectionRefusedError):
             return 'ipErr'
-        except ConnectionRefusedError:
-            return 'refused'
+
+    def test_connection(self):
+        return self._connect()
 
     @property
     def profiles(self):
@@ -45,11 +47,7 @@ class TelnetConnection:
         }
 
     def execute_commands(self, commands):
-        with Telnet(self.ip) as tn:
-            tn.read_until(b'Password:')
-            tn.write(_input_to_telnet(self.password))
-            time.sleep(2)
-
+        def execute(tn):
             # enter enable mode
             tn.write(_input_to_telnet('enable'))
             tn.read_until(b'Password')
@@ -57,3 +55,5 @@ class TelnetConnection:
 
             for command in commands:
                 tn.write(_input_to_telnet(command))
+
+        return self._connect(execute)

@@ -39,7 +39,9 @@ def do_configuration():
 
     # config each router by telnet
     for host in tp.valid_hosts:
-        config_router(host, session[host])
+        result = config_router(host, session[host])
+        if result != 'success':
+            return ResultMessage(False, result)._asdict()
 
     return ResultMessage(True, '')._asdict()
 
