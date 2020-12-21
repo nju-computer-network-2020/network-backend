@@ -16,9 +16,8 @@ _commands_rta = [
     'interface s0/0/1',
     'ip address 192.168.1.1 255.255.255.252',
     'no shutdown',
-    'clock rate 9600',
     'exit',
-    'ip route 192.168.1.32 255.255.255.224 192.168.1.2'
+    'ip route 192.168.1.32 255.255.255.224 192.168.1.2',
     'exit',
     'exit'
 ]
