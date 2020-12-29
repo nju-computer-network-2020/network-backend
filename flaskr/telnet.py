@@ -9,7 +9,7 @@ def config_router(hostname, router_info):
 
 
 def _input_to_telnet(command: str):
-    return command.encode('ascii') + b'\n'
+    return command.encode('ascii') + b'\r\n'
 
 
 class TelnetConnection:
