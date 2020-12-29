@@ -1,6 +1,3 @@
-import topology as tp
-
-
 def config_router(hostname, router_info):
     return 'success'
 
@@ -36,4 +33,3 @@ class PCTelnetConnection:
         self.hostname = hostname
         self.ip = ip
         self.password = password
-

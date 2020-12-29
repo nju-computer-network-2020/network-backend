@@ -1,7 +1,8 @@
-from telnetlib import Telnet
 import time
-import topology as tp
+from telnetlib import Telnet
 from typing import Callable, Any
+
+import topology as tp
 
 
 def config_router(hostname, router_info):

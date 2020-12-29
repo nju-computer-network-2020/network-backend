@@ -1,7 +1,9 @@
-from flask import Flask, request, session
-from telnet import RouterTelnetConnection, config_router, run_test
 from collections import namedtuple
+
+from flask import Flask, request, session
+
 import topology as tp
+from telnet import RouterTelnetConnection, config_router, run_test
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
