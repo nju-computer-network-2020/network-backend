@@ -11,18 +11,13 @@ def config_router(hostname, router_info):
 
 def run_test(hostname, router_info, expected_string):
     target = RouterTelnetConnection(hostname, router_info['ip'], router_info['password'])
-    test_results = target.execute_tests(tp.test_commands[hostname])
+    exec_result = target.execute_tests(tp.test_commands[hostname])
 
-    if test_results == 'invalidPasswd' or test_results == 'ipErr':
-        return False, test_results
+    if exec_result == 'invalidPasswd' or exec_result == 'ipErr':
+        return False, exec_result
 
-    # compare these results with expected result
-    print(test_results)
-    joined_test_result = test_results.join(' ')
-    if expected_string in joined_test_result:
-        return True, test_results
-
-    return False, test_results
+    print(exec_result)
+    return exec_result
 
 
 def _input_to_telnet(command: str):
@@ -83,13 +78,17 @@ class RouterTelnetConnection:
 
     def execute_tests(self, test_commands):
         def execute(tn):
-            test_results = []
+            telnet_output = []
+            test_result = True
             for command, expected in test_commands:
                 tn.write(_input_to_telnet(command))
                 if expected is not None:
+                    # read messages from telnet and test them with expected string
                     response = tn.read_until(expected, timeout=5)
-                    test_results.append(response)
+                    if expected not in response:
+                        test_result = False
+                    telnet_output.append(response.decode('ascii'))
 
-            return test_results
+            return test_result, telnet_output
 
         return self._connect(execute, enabled=True)

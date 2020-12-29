@@ -65,7 +65,7 @@ commands = {
 
 test_commands = {
     RTB: [
-        'configure terminal',
-        'show ip nat translations'
+        ('configure terminal', None),
+        ('show ip nat translations', b'192.168.1.35')
     ]
 }

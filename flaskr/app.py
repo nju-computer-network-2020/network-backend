@@ -1,5 +1,5 @@
 from flask import Flask, request, session
-from telnet_mock import RouterTelnetConnection, config_router, run_test
+from telnet import RouterTelnetConnection, config_router, run_test
 from collections import namedtuple
 import topology as tp
 
@@ -24,7 +24,7 @@ def connect_telnet():
 
     # test connection
     telnet = RouterTelnetConnection(hostname, ip_add, password)
-    connect_result, _ = telnet.test_connection()
+    connect_result = telnet.test_connection()
     if connect_result == 'success':
         session[hostname] = telnet.profiles
         return ResultMessage(True, '')._asdict()
@@ -51,7 +51,7 @@ def do_configuration():
 @app.route('/testResult')
 def do_test():
     # return NAT table of RTB
-    result = run_test(tp.RTB, session[tp.RTB])
+    result = run_test(tp.RTB, session[tp.RTB], '')
     return TestResult(*result)._asdict()
 
 
