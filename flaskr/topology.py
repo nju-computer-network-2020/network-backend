@@ -62,3 +62,10 @@ commands = {
     RTB: _commands_rtb,
     RTC: _commands_rtc
 }
+
+test_commands = {
+    RTB: [
+        'configure terminal',
+        'show ip nat translations'
+    ]
+}
