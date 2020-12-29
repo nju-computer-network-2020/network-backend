@@ -37,6 +37,7 @@
   ```json
   url: "/testResult",
   result: {
+      "success": true,
       "message": ""
   }
   ```

@@ -1,11 +1,15 @@
-from flask import Flask, request, session
-from telnet import TelnetConnection, config_router
 from collections import namedtuple
+
+from flask import Flask, request, session
+
 import topology as tp
+from telnet import RouterTelnetConnection, config_router, run_test
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-ResultMessage = namedtuple('result', ['success', 'errMessage'])
+ResultMessage = namedtuple('ResultMessage', ['success', 'errMessage'])
+TestResult = namedtuple('TestResult', ['success', 'message'])
 
 
 @app.route('/connect', methods=['GET'])
@@ -21,7 +25,7 @@ def connect_telnet():
         return ResultMessage(False, 'invalidHostname')
 
     # test connection
-    telnet = TelnetConnection(hostname, ip_add, password)
+    telnet = RouterTelnetConnection(hostname, ip_add, password)
     connect_result = telnet.test_connection()
     if connect_result == 'success':
         session[hostname] = telnet.profiles
@@ -49,7 +53,8 @@ def do_configuration():
 @app.route('/testResult')
 def do_test():
     # return NAT table of RTB
-    pass
+    result = run_test(tp.RTB, session[tp.RTB], '')
+    return TestResult(*result)._asdict()
 
 
 if __name__ == '__main__':
