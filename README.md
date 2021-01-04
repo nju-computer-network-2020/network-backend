@@ -32,14 +32,14 @@
 
   - `hostIncomplete` 表示没有给所有的路由器都输入相应的 telnet 地址和密码。
 
-- 获取测试结果（待定）
+- 获取测试结果
 
   ```json
   url: "/testResult",
-  result: {
+  result: [{
       "success": true,
       "message": ""
-  }
+  }]
   ```
 
 ## 依赖

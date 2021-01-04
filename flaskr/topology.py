@@ -5,6 +5,7 @@ RTA = 'RTA'
 RTB = 'RTB'
 RTC = 'RTC'
 PC2 = 'pc2'
+PC1 = 'pc1'
 
 valid_hosts = {RTA, RTB, RTC}
 
@@ -26,6 +27,12 @@ rtc_profile = {
     'password': '123456'
 }
 
+pc1_profile = {
+    'hostname': PC1,
+    'ip': '192.168.3.2',
+    'password': '123456'
+}
+
 pc2_profile = {
     'hostname': PC2,
     'ip': '10.0.0.11',
@@ -40,7 +47,7 @@ _commands_rta = [
     'interface f0/0',
     'ip address 192.168.3.1 255.255.255.0',
     'no shutdown',
-    'interface s0/0/1',
+    'interface s0/0/0',
     'ip address 192.168.1.1 255.255.255.252',
     'no shutdown',
     'exit',
@@ -55,7 +62,7 @@ _commands_rtb = [
     "interface f0/0",
     "ip address 10.0.0.1 255.0.0.0",
     "no shutdown",
-    "interface s0/0/1",
+    "interface s0/0/0",
     "ip address 192.168.1.2 255.255.255.252",
     "no shutdown",
     "clock rate 9600",
@@ -65,7 +72,7 @@ _commands_rtb = [
     'ip nat inside source static 10.0.0.11 192.168.1.35',
     'interface f0/0',
     'ip nat inside',
-    'interface s0/0/1',
+    'interface s0/0/0',
     'ip nat outside',
     'exit',
     'exit',
@@ -94,7 +101,11 @@ test_commands = {
     RTB: [
         ('show ip nat translations', b'192.168.1.35')
     ],
-    'pc2': [
+    PC2: [
         ('ping 192.168.3.2', '(0% 丢失)'.encode('gbk'))
+    ],
+    PC1: [
+        ('ping 10.0.0.0', '(100% 丢失)'.encode('gbk')),
+        ('ping 192.168.1.35', '(0% 丢失)'.encode('gbk')),
     ]
 }

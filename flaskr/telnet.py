@@ -10,20 +10,18 @@ def config_router(hostname, router_info):
     return target.execute_commands(tp.commands[hostname])
 
 
-def run_test(hostname, router_info, expected_string):
+def run_test(hostname, router_info):
     target = RouterTelnetConnection(hostname, router_info['ip'], router_info['password'])
-    exec_result = target.execute_tests(tp.test_commands[hostname])
-
-    if exec_result == 'invalidPasswd' or exec_result == 'ipErr':
-        return False, exec_result
-
-    print(exec_result)
-    return exec_result
+    return _execute_test(target)
 
 
 def run_pc_test(hostname, pc_info):
     target = PCTelnetConnection(hostname, pc_info['ip'], pc_info['password'])
-    exec_result = target.execute_tests(tp.test_commands[hostname])
+    return _execute_test(target)
+
+
+def _execute_test(target_telnet_connection):
+    exec_result = target_telnet_connection.execute_tests(tp.test_commands[target_telnet_connection.hostname])
     print(exec_result)
 
     if exec_result == 'invalidPasswd' or exec_result == 'ipErr':

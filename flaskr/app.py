@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from flask import Flask, request, session, make_response
+from flask import Flask, request, session
 from flask_cors import CORS
 
 import topology as tp
@@ -38,11 +38,6 @@ def connect_telnet():
 
 @app.route('/autoConfig')
 def do_configuration():
-    # get saved information from session
-    # use these information to do configuration
-    # if not tp.valid_hosts.issubset(session.keys()):
-    #     return ResultMessage(False, 'hostIncomplete')._asdict()
-
     # config each router by telnet
     for router_profile in tp.router_profiles:
         result = config_router(router_profile['hostname'], router_profile)
@@ -55,8 +50,13 @@ def do_configuration():
 @app.route('/testResult')
 def do_test():
     # return NAT table of RTB
-    result = run_pc_test(tp.PC2, tp.pc2_profile)
-    return TestResult(*result)._asdict()
+    nat_test = run_test(tp.RTB, tp.rtb_profile)
+
+    # run test of pc1 and pc2
+    pc1_test = run_pc_test(tp.PC1, tp.pc1_profile)
+    pc2_test = run_pc_test(tp.PC2, tp.pc2_profile)
+
+    return [TestResult(*result)._asdict() for result in [nat_test, pc1_test, pc2_test]]
 
 
 if __name__ == '__main__':
