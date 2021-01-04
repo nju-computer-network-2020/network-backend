@@ -1,12 +1,14 @@
 from collections import namedtuple
 
-from flask import Flask, request, session
+from flask import Flask, request, session, make_response
+from flask_cors import CORS
 
 import topology as tp
-from telnet import RouterTelnetConnection, config_router, run_test
+from telnet import RouterTelnetConnection, config_router, run_test, run_pc_test
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+CORS(app, supports_credentials=True)
 
 ResultMessage = namedtuple('ResultMessage', ['success', 'errMessage'])
 TestResult = namedtuple('TestResult', ['success', 'message'])
@@ -38,12 +40,12 @@ def connect_telnet():
 def do_configuration():
     # get saved information from session
     # use these information to do configuration
-    if not tp.valid_hosts.issubset(session.keys()):
-        return ResultMessage(False, 'hostIncomplete')._asdict()
+    # if not tp.valid_hosts.issubset(session.keys()):
+    #     return ResultMessage(False, 'hostIncomplete')._asdict()
 
     # config each router by telnet
-    for host in tp.valid_hosts:
-        result = config_router(host, session[host])
+    for router_profile in tp.router_profiles:
+        result = config_router(router_profile['hostname'], router_profile)
         if result != 'success':
             return ResultMessage(False, result)._asdict()
 
@@ -53,7 +55,7 @@ def do_configuration():
 @app.route('/testResult')
 def do_test():
     # return NAT table of RTB
-    result = run_test(tp.RTB, session[tp.RTB], '')
+    result = run_pc_test(tp.PC2, tp.pc2_profile)
     return TestResult(*result)._asdict()
 
 

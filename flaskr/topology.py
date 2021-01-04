@@ -4,8 +4,35 @@
 RTA = 'RTA'
 RTB = 'RTB'
 RTC = 'RTC'
+PC2 = 'pc2'
 
 valid_hosts = {RTA, RTB, RTC}
+
+rta_profile = {
+    'hostname': RTA,
+    'ip': '172.16.0.2',
+    'password': '123456'
+}
+
+rtb_profile = {
+    'hostname': RTB,
+    'ip': '172.16.0.3',
+    'password': '123456'
+}
+
+rtc_profile = {
+    'hostname': RTC,
+    'ip': '172.16.0.4',
+    'password': '123456'
+}
+
+pc2_profile = {
+    'hostname': PC2,
+    'ip': '10.0.0.11',
+    'password': '123456'
+}
+
+router_profiles = [rta_profile, rtb_profile, rtc_profile]
 
 # commands to be executed on RTA
 _commands_rta = [
@@ -65,7 +92,9 @@ commands = {
 
 test_commands = {
     RTB: [
-        ('configure terminal', None),
         ('show ip nat translations', b'192.168.1.35')
+    ],
+    'pc2': [
+        ('ping 192.168.3.2', '(0% 丢失)'.encode('gbk'))
     ]
 }

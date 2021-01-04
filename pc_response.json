@@ -1,0 +1,6 @@
+{
+  "message": [
+    "ping 192.168.3.2\r\n\r\n\u6b63\u5728 Ping 192.168.3.2 \u5177\u6709 32 \u5b57\u8282\u7684\u6570\u636e:\r\n\u6765\u81ea 192.168.3.2 \u7684\u56de\u590d: \u5b57\u8282=32 \u65f6\u95f4=9ms TTL=126\r\n\u6765\u81ea 192.168.3.2 \u7684\u56de\u590d: \u5b57\u8282=32 \u65f6\u95f4=9ms TTL=126\r\n\u6765\u81ea 192.168.3.2 \u7684\u56de\u590d: \u5b57\u8282=32 \u65f6\u95f4=9ms TTL=126\r\n\u6765\u81ea 192.168.3.2 \u7684\u56de\u590d: \u5b57\u8282=32 \u65f6\u95f4=9ms TTL=126\r\n\r\n192.168.3.2 \u7684 Ping \u7edf\u8ba1\u4fe1\u606f:\r\n    \u6570\u636e\u5305: \u5df2\u53d1\u9001 = 4\uff0c\u5df2\u63a5\u6536 = 4\uff0c\u4e22\u5931 = 0 (0% \u4e22\u5931)\uff0c\r\n\u5f80\u8fd4\u884c\u7a0b"
+  ],
+  "success": true
+}
